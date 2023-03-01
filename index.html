@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html><head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"/>
+    <script src="index.js"></script>
+    <style>
+        #frame{
+            height: 350px;
+            width: 700px;
+            border-radius: 30px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding:30px;
+        }
+        #bg{
+            width:fit-content;
+            height: fit-content;
+            padding:20px;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+
+        }
+        html,body{
+margin: 0;
+padding: 0;
+height: 100%;
+width: 100%;
+        }
+        input,button,#bg{
+            margin:20px;
+        }
+    </style>
+    
+    </head>
+    <body>
+        
+
+        <input id='file' type='file'/>
+        <input type="text" id="color2" placeholder="#FFFF"/>
+        
+        <input type="text" id="color1" placeholder="#FFFF"/>
+        <div id="bg">
+            <div id='frame'></div>
+        </div>
+        <button onclick="convert()" class="button">Save</button>
+        <script>
+const frame = document.getElementById('frame');
+const file = document.getElementById('file');
+
+file.addEventListener('change', function() {
+    // access the uploaded image file and generate URL
+    const image = file.files[0];
+    const bgUrl = URL.createObjectURL(image);
+    let col1 = document.getElementById('color2').value
+    let col2 = document.getElementById('color1').value
+    document.getElementById("bg").style.background=`linear-gradient(to right,${col1},${col2})`
+    console.log(col1,col2)
+    // set background image of frame
+    frame.style.backgroundImage = `url(${bgUrl})`;
+});
+function convert(){
+     
+html2canvas(document.getElementById("bg")).then(function(canvas) {
+    var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+    window.location.href=image
+    // document.body.appendChild(canvas);
+});
+}
+                    </script>   
+
+    </body>
+</html>
